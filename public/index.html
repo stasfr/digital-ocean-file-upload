@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+    <!-- LOCAL SCRIPTS -->
+    <script src="./script.js"></script>
+  </head>
+  <body class="w-screen h-screen flex items-center justify-center">
+    <form
+      method="post"
+      enctype="multipart/form-data"
+      action="/upload"
+      class="flex flex-col bg-primary-content w-96 gap-4 rounded-xl p-8">
+      <input type="file" name="upload" class="file-input file-input-bordered" />
+      <input type="submit" class="btn" />
+    </form>
+  </body>
+</html>
