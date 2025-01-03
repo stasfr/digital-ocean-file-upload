@@ -19,7 +19,7 @@ export class FileStorageAdapter {
     this.s3Client = new S3Client({
       endpoint: process.env.ENDPOINT,
       forcePathStyle: false,
-      region: 'sfo3',
+      region: process.env.REGION,
       credentials: {
         accessKeyId: process.env.ACCESS_KEY_ID,
         secretAccessKey: process.env.SECRET_ACCESS_KEY,
