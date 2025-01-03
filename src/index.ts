@@ -31,15 +31,21 @@ app.post(
     try {
       if (!request.file) {
         response.status(400).send('No file uploaded.');
+        return;
       }
+      const fileStorageAdapter = new FileStorageAdapter();
 
       const data = request.file;
 
       const blob = new Blob([data.buffer]);
       const file = new File([blob], data.originalname, { type: data.mimetype });
 
-      const fileStorageAdapter = new FileStorageAdapter();
-      fileStorageAdapter.uploadObject(file);
+      const result = await fileStorageAdapter.processFile({
+        file,
+        email: 'example@example.com',
+      });
+
+      console.log(result);
 
       response.json({
         message: 'Hello World!',
