@@ -1,6 +1,3 @@
-const fileInput = document.querySelector('#fileInput');
-fileInput.addEventListener('change', sendFile);
-
 async function sendFile(event) {
   const currentFile = event.target.files[0];
 
@@ -8,11 +5,11 @@ async function sendFile(event) {
   formData.append('file', currentFile);
 
   const response = await fetch('/upload', {
-    body: {
-      test: 'test',
-    },
+    body: formData,
     method: 'POST',
   });
 
   console.log(response);
 }
+
+document.querySelector('#fileInput').addEventListener('change', sendFile);

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,23 +10,20 @@
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css"
       rel="stylesheet"
-      type="text/css" />
+      type="text/css"
+    />
   </head>
   <body class="w-screen h-screen flex items-center justify-center">
-    <form
-      method="post"
-      enctype="multipart/form-data"
-      action="/upload"
-      class="flex flex-col bg-primary-content w-96 gap-4 rounded-xl p-8">
+    <div class="flex flex-col bg-primary-content w-96 gap-4 rounded-xl p-8">
       <input
         id="fileInput"
         type="file"
         name="upload"
-        class="file-input file-input-bordered" />
-      <input type="submit" class="btn" />
-    </form>
+        class="file-input file-input-bordered"
+      />
+    </div>
   </body>
 
   <!-- LOCAL SCRIPTS -->
-  <!-- <script src="./script.js"></script> -->
+  <script src="./script.js"></script>
 </html>
