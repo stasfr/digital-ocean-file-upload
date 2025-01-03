@@ -60,7 +60,9 @@ export class FileStorageAdapter {
       const command = new PutObjectCommand(params);
       const data = await this.s3Client.send(command);
 
-      console.log(data);
+      const uploadStatus = data.$metadata.httpStatusCode;
+
+      if (uploadStatus !== 200) throw new Error('Error in file uploading');
 
       console.log(
         'Successfully uploaded object: ' + params.Bucket + '/' + params.Key
@@ -74,7 +76,7 @@ export class FileStorageAdapter {
         processingError: null,
       };
     } catch (error) {
-      console.log('Error', error);
+      return error;
     }
   }
 }
