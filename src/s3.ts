@@ -1,4 +1,5 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import type { PutObjectCommandInput } from '@aws-sdk/client-s3';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,7 +16,7 @@ const s3Client = new S3Client({
 
 export const uploadObject = async (file) => {
   try {
-    const params = {
+    const params: PutObjectCommandInput = {
       Bucket: process.env.BUCKET,
       Key: 'test.pdf',
       Body: file,
