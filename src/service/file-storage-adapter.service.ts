@@ -41,7 +41,8 @@ export class FileStorageAdapter {
     const unixDate = getUnixDate();
     const uuid = crypto.randomUUID();
 
-    const fileType = file.name.split('.')[file.name.split('.').length - 1];
+    const fileNameArray = file.name.split('.');
+    const fileType = fileNameArray[file.name.split('.').length - 1];
 
     const fileName = `${email}_${unixDate}_${uuid}.${fileType}`;
 
