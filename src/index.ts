@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import express from 'express';
-import fs from 'fs';
+import * as fs from 'fs';
 
 import { uploadObject } from './s3.js';
 
