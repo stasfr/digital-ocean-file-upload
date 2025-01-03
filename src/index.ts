@@ -1,11 +1,14 @@
 import * as dotenv from 'dotenv';
 import express from 'express';
 import type { Request, Response } from 'express';
-import * as fs from 'fs';
+import multer from 'multer';
 
-import { uploadObject } from './s3.js';
+import { FileStorageAdapter } from './service/file-storage-adapter.service';
 
 dotenv.config();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const app = express();
 
@@ -21,24 +24,38 @@ app.get('/heartbeat', function (request: Request, response: Response) {
   });
 });
 
-app.post('/upload', async function (request: Request, response: Response) {
-  try {
-    const file = fs.readFileSync('./test/file.pdf');
+app.post(
+  '/upload',
+  upload.single('file'),
+  async function (request: Request, response: Response) {
+    try {
+      if (!request.file) {
+        response.status(400).send('No file uploaded.');
+      }
 
-    console.log(file);
+      const data = request.file;
 
-    uploadObject(file);
+      const blob = new Blob([data.buffer]);
+      const file = new File([blob], data.originalname, { type: data.mimetype });
 
-    response.json({
-      message: 'Hello World!',
-    });
-  } catch (error) {
-    response.status(500).json({
-      error,
-    });
+      const fileStorageAdapter = new FileStorageAdapter();
+      fileStorageAdapter.uploadObject(file);
+
+      response.json({
+        message: 'Hello World!',
+      });
+    } catch (error) {
+      console.log(error);
+
+      response.status(500).json({
+        error,
+      });
+    }
   }
-});
+);
 
-app.listen(3001, function () {
-  console.log('Server listening on port 3001.');
+const PORT: string = process.env.PORT || '3000';
+
+app.listen(PORT, function () {
+  console.log(`Server listening on port ${PORT}.`);
 });
