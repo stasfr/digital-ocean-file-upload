@@ -42,7 +42,7 @@ export class FileStorageAdapter {
     const uuid = crypto.randomUUID();
 
     const fileNameArray = file.name.split('.');
-    const fileType = fileNameArray[file.name.split('.').length - 1];
+    const fileType = fileNameArray[fileNameArray.length - 1];
 
     const fileName = `${email}_${unixDate}_${uuid}.${fileType}`;
 
