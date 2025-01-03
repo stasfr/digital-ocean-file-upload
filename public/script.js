@@ -1,5 +1,5 @@
-async function sendFile(event) {
-  const currentFile = event.target.files[0];
+async function sendFile() {
+  const currentFile = document.querySelector('#fileInput').files[0];
 
   const formData = new FormData();
   formData.append('file', currentFile);
@@ -12,4 +12,4 @@ async function sendFile(event) {
   console.log(response);
 }
 
-document.querySelector('#fileInput').addEventListener('change', sendFile);
+document.querySelector('#sendBtn').addEventListener('click', sendFile);
