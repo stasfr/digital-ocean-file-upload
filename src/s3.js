@@ -1,29 +1,34 @@
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import dotenv from 'dotenv';
-
-import aws from 'aws-sdk';
-import multer from 'multer';
-import multerS3 from 'multer-s3';
 
 dotenv.config();
 
-const spacesEndpoint = new aws.Endpoint(process.env.ENDPOINT);
-
-export const s3 = new aws.S3({
-  endpoint: spacesEndpoint,
+const s3Client = new S3Client({
+  endpoint: process.env.ENDPOINT,
+  forcePathStyle: false,
+  region: 'sfo3',
   credentials: {
     accessKeyId: process.env.ACCESS_KEY_ID,
-    // secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
   },
 });
 
-export const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.BUCKET,
-    acl: 'public-read',
-    key: function (request, file, cb) {
-      console.log('file', file);
-      cb(null, file.originalname);
-    },
-  }),
-}).array('upload', 1);
+export const uploadObject = async (file) => {
+  try {
+    const params = {
+      Bucket: process.env.BUCKET,
+      Key: 'test.pdf',
+      Body: file,
+      ACL: 'public-read-write',
+    };
+
+    const data = await s3Client.send(new PutObjectCommand(params));
+    console.log(
+      'Successfully uploaded object: ' + params.Bucket + '/' + params.Key
+    );
+
+    return data;
+  } catch (err) {
+    console.log('Error', err);
+  }
+};

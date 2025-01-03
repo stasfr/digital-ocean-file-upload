@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { s3 } from './s3.js';
+import fs from 'fs';
+
+import { uploadObject } from './s3.js';
 
 dotenv.config();
 
@@ -12,27 +14,28 @@ app.get('/', function (request, response) {
   response.sendFile(__dirname + '/public/index.html');
 });
 
-app.post('/upload', async function (request, response) {
-  const formData = await request.formData();
-  const file = formData.get('file');
-
-  console.log(file);
-
-  s3.putObject({
-    Bucket: process.env.BUCKET,
-    Key: 'original_file_name.pdf',
-    Body: readStream,
-    acl: 'public-read',
+app.get('/heartbeat', function (request, response) {
+  response.json({
+    message: 'Hello World!',
   });
+});
 
-  // upload(request, response, function (error) {
-  //   if (error) {
-  //     console.log(error);
-  //     return response.json('/error');
-  //   }
-  //   console.log('File uploaded successfully.');
-  //   response.json('/success');
-  // });
+app.post('/upload', async function (request, response) {
+  try {
+    const file = fs.readFileSync('./test/file.pdf');
+
+    console.log(file);
+
+    uploadObject(file);
+
+    response.json({
+      message: 'Hello World!',
+    });
+  } catch (error) {
+    response.status(500).json({
+      error,
+    });
+  }
 });
 
 app.listen(3001, function () {
