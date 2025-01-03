@@ -57,7 +57,8 @@ export class FileStorageAdapter {
     params: PutObjectCommandInput
   ): Promise<DBFilePayload> {
     try {
-      const data = await this.s3Client.send(new PutObjectCommand(params));
+      const command = new PutObjectCommand(params);
+      const data = await this.s3Client.send(command);
 
       console.log(data);
 
